@@ -109,10 +109,23 @@ class RAGRetriever:
                 "refuse_reason": "dosage",
             }
 
+        # ── Translate Darija disease terms to scientific/English for better retrieval ──
+        DISEASE_TERM_MAP = {
+            "عين الطاووس":   "Spilocaea oleagina peacock spot olive fungal treatment copper",
+            "عنكبوت":        "Aculus olearius olive mite acariose treatment",
+            "أكولوس":        "Aculus olearius olive mite acariose treatment",
+            "أنثراكنوز":     "Colletotrichum olive anthracnose treatment fungicide",
+        }
+        augmented = query
+        for term, expansion in DISEASE_TERM_MAP.items():
+            if term in query:
+                augmented = f"{query} {expansion}"
+                break
+
         # ── Augment query with disease hint if available ──────────────────────
-        search_query = query
+        search_query = augmented
         if disease_hint:
-            search_query = f"{disease_hint} {query}"
+            search_query = f"{disease_hint} {augmented}"
 
         # ── Semantic search ───────────────────────────────────────────────────
         vec = self._embed(search_query)
