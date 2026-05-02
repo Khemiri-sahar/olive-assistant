@@ -61,3 +61,4 @@ Thumbs.db
 AI_CONTEXT.md
 backend/rag/faiss_index
 node_modules/
+dataset/

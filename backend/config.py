@@ -13,9 +13,9 @@ load_dotenv(Path(__file__).parent.parent / ".env")
 BASE_DIR        = Path(__file__).parent.parent
 CORPUS_DIR      = BASE_DIR / "corpus"
 MODELS_DIR      = BASE_DIR / "models"
-FAISS_INDEX     = CORPUS_DIR / "index.faiss"
+FAISS_INDEX     = Path(os.getenv("FAISS_INDEX_PATH", CORPUS_DIR / "index.faiss"))
 METADATA_FILE   = CORPUS_DIR / "metadata.json"
-CNN_MODEL_PATH  = MODELS_DIR / "olive_cnn.pth"
+CNN_MODEL_PATH  = Path(os.getenv("CNN_MODEL_PATH", MODELS_DIR / "olive_cnn.pth"))
 
 # ── LLM ──────────────────────────────────────────────────────────────────────
 GROQ_API_KEY        = os.getenv("GROQ_API_KEY", "")
@@ -38,8 +38,7 @@ CHUNK_SIZE          = 500          # tokens per chunk
 CHUNK_OVERLAP       = 80           # token overlap between chunks
 TOP_K               = 5            # number of passages to retrieve
 # *** CRITICAL: hallucination guard threshold ***
-# If cosine similarity of top-1 result < this value, REFUSE to answer.
-SIMILARITY_THRESHOLD = 0.42
+SIMILARITY_THRESHOLD = float(os.getenv("SIMILARITY_THRESHOLD", 0.42))
 
 # ── CNN ───────────────────────────────────────────────────────────────────────
 CNN_INPUT_SIZE      = 224

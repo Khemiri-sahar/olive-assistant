@@ -11,7 +11,10 @@
 'use strict';
 
 // ── Config ────────────────────────────────────────────────────────────────────
-const API_BASE = 'http://localhost:8000';   // backend port (frontend runs separately)
+// Use dynamic host for mobile testing. If served via 3000, point to 8000.
+const API_BASE = window.location.port === '3000' || window.location.port === '5173'
+  ? window.location.protocol + '//' + window.location.hostname + ':8000'
+  : '';
 
 // ── State ─────────────────────────────────────────────────────────────────────
 const state = {
@@ -332,9 +335,14 @@ function displayAnswer(data) {
 
 function playAudio() {
   const audio = document.getElementById('audio-el');
+  const btn = document.getElementById('btn-play');
   if (audio.src) {
+    if (!audio.paused) {
+      audio.pause();
+      btn.textContent = '🔊 استمع للجواب';
+      return;
+    }
     audio.play();
-    const btn = document.getElementById('btn-play');
     btn.textContent = '⏸ إيقاف';
     audio.onended = () => { btn.textContent = '🔊 استمع للجواب'; };
     audio.onpause = () => { btn.textContent = '🔊 استمع للجواب'; };
