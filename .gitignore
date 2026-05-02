@@ -1,0 +1,37 @@
+# Environments
+venv/
+.env
+
+# Python caching
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Temporary test scripts
+scripts/test_rag.py
+scripts/mock_pdf.py
+
+# RAG Corpus & Indices
+corpus/pdfs/
+corpus/*.faiss
+corpus/*.json
+
+# ML and Models
+models/
+*.pth
+*.pt
+*.h5
+*.onnx
+.huggingface/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+AI_CONTEXT.md

@@ -1,0 +1,113 @@
+"""
+config.py — Central configuration for the Olive Assistant.
+All tuneable parameters live here. Adjust before jury demo.
+"""
+
+import os
+from pathlib import Path
+
+# ── Paths ────────────────────────────────────────────────────────────────────
+BASE_DIR        = Path(__file__).parent.parent
+CORPUS_DIR      = BASE_DIR / "corpus"
+MODELS_DIR      = BASE_DIR / "models"
+FAISS_INDEX     = CORPUS_DIR / "index.faiss"
+METADATA_FILE   = CORPUS_DIR / "metadata.json"
+CNN_MODEL_PATH  = MODELS_DIR / "olive_cnn.pth"
+
+# ── LLM ──────────────────────────────────────────────────────────────────────
+ANTHROPIC_API_KEY   = os.getenv("ANTHROPIC_API_KEY", "")
+LLM_MODEL           = "claude-opus-4-5"          # most capable for Darija
+LLM_MAX_TOKENS      = 400                          # keep responses concise
+
+# ── ASR (Whisper) ─────────────────────────────────────────────────────────────
+WHISPER_MODEL       = os.getenv("WHISPER_MODEL", "base")  # use large-v3 on GPU
+WHISPER_LANGUAGE    = "ar"
+
+# ── TTS (edge-tts) ───────────────────────────────────────────────────────────
+# Tunisian Arabic voice — best match for Darija
+TTS_VOICE           = "ar-TN-ReemNeural"
+TTS_RATE            = "+0%"        # speech speed (+10% faster, -10% slower)
+TTS_VOLUME          = "+0%"
+
+# ── RAG / FAISS ───────────────────────────────────────────────────────────────
+EMBEDDING_MODEL     = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+CHUNK_SIZE          = 500          # tokens per chunk
+CHUNK_OVERLAP       = 80           # token overlap between chunks
+TOP_K               = 5            # number of passages to retrieve
+# *** CRITICAL: hallucination guard threshold ***
+# If cosine similarity of top-1 result < this value, REFUSE to answer.
+SIMILARITY_THRESHOLD = 0.42
+
+# ── CNN ───────────────────────────────────────────────────────────────────────
+CNN_INPUT_SIZE      = 224
+CNN_CONFIDENCE_MIN  = 0.50         # below this = "uncertain" → don't assert disease
+
+DISEASE_CLASSES = {
+    0: {
+        "ar": "سليم",
+        "fr": "Sain",
+        "en": "Healthy",
+        "eppo": None,
+        "advice_ar": "الوڤة سليمة، واصل الرعاية الاعتيادية."
+    },
+    1: {
+        "ar": "عين الطاووس",
+        "fr": "Œil de paon",
+        "en": "Peacock Eye",
+        "eppo": "SPIOLEA",
+        "advice_ar": "مرض فطري — رشّ بمبيدات النحاس قبل الأمطار. راجع قاعدة EPPO."
+    },
+    2: {
+        "ar": "أنثراكنوز",
+        "fr": "Anthracnose",
+        "en": "Anthracnose",
+        "eppo": "COLLGL",
+        "advice_ar": "داء فطري خطير — يُصيب الثمار. العلاج بالمبيدات الجوية بعد الإزهار."
+    },
+    3: {
+        "ar": "ذبول الفرتيسيليوم",
+        "fr": "Verticilliose",
+        "en": "Verticillium Wilt",
+        "eppo": "VERTDA",
+        "advice_ar": "مرض تربة — لا علاج كيميائي فعّال. استشر مرشدًا زراعيًا فورًا."
+    },
+    4: {
+        "ar": "تبقع السيركوسبورا",
+        "fr": "Cercosporose",
+        "en": "Cercospora Leaf Spot",
+        "eppo": "CERCOL",
+        "advice_ar": "تبقعات رمادية — رشّ بمركبات النحاس في الخريف."
+    },
+}
+
+# ── Corpus source URLs ────────────────────────────────────────────────────────
+CORPUS_SOURCES = [
+    {
+        "name": "FAO Olive Production Manual",
+        "url": "https://www.fao.org/3/y4252e/y4252e.pdf",
+        "lang": "en",
+        "tag": "FAO"
+    },
+    {
+        "name": "EPPO Spilocaea oleagina",
+        "url": "https://gd.eppo.int/taxon/SPIOLEA/documents",
+        "lang": "en",
+        "tag": "EPPO"
+    },
+    {
+        "name": "CIHEAM Olive Production Med",
+        "url": "https://om.ciheam.org/om/pdf/a56/00800108.pdf",
+        "lang": "fr",
+        "tag": "CIHEAM"
+    },
+]
+
+# ── Refusal messages (in Darija) ──────────────────────────────────────────────
+REFUSAL_MESSAGE = (
+    "آسف، ما عنديش المعلومة هاذي في قاعدة البيانات متاعي. "
+    "يُنصح تتصل بمرشد زراعي مختص باش يعاونك."
+)
+REFUSAL_MESSAGE_DOSAGE = (
+    "ما نقدرش نعطيك الجرعة الدقيقة — هاذا خطر. "
+    "رجع للفيشة التقنية للمبيد أو اتصل بمرشد زراعي."
+)

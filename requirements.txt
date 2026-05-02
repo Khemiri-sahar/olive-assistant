@@ -1,0 +1,47 @@
+# ============================================================
+# Olive Assistant — Python Dependencies
+# ============================================================
+
+# Web framework
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+python-multipart==0.0.9
+
+# Whisper ASR
+openai-whisper==20231117
+torch==2.3.0
+torchvision==0.18.0
+torchaudio==2.3.0
+
+# TTS
+edge-tts==6.1.10
+
+# RAG / Embeddings
+sentence-transformers==3.0.1
+faiss-cpu==1.8.0
+langchain==0.2.6
+langchain-community==0.2.6
+
+# PDF processing
+pypdf2==3.0.1
+pdfminer.six==20221105
+
+# Vision / CNN
+Pillow==10.3.0
+opencv-python-headless==4.10.0.82
+numpy==1.26.4
+scikit-learn==1.5.0
+matplotlib==3.9.0
+
+# HTTP / downloads
+httpx==0.27.0
+requests==2.32.3
+aiofiles==23.2.1
+
+# Utilities
+python-dotenv==1.0.1
+pydantic==2.7.4
+tqdm==4.66.4
+
+# LLM client (Anthropic)
+anthropic==0.29.0
