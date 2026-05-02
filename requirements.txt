@@ -14,7 +14,7 @@ groq==1.0.0
 
 # Whisper ASR
 # System dependency: ffmpeg must be installed separately
-openai-whisper==20231117
+openai-whisper
 torch==2.3.0
 torchvision==0.18.0
 torchaudio==2.3.0

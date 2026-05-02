@@ -10,12 +10,12 @@ from dotenv import load_dotenv
 load_dotenv(Path(__file__).parent.parent / ".env")
 
 # ── Paths ────────────────────────────────────────────────────────────────────
-BASE_DIR        = Path(__file__).parent.parent
+BASE_DIR        = Path(__file__).resolve().parent.parent
 CORPUS_DIR      = BASE_DIR / "corpus"
 MODELS_DIR      = BASE_DIR / "models"
-FAISS_INDEX     = Path(os.getenv("FAISS_INDEX_PATH", CORPUS_DIR / "index.faiss"))
+FAISS_INDEX     = Path(os.getenv("FAISS_INDEX_PATH", str(CORPUS_DIR / "index.faiss")))
 METADATA_FILE   = CORPUS_DIR / "metadata.json"
-CNN_MODEL_PATH  = Path(os.getenv("CNN_MODEL_PATH", MODELS_DIR / "olive_cnn.pth"))
+CNN_MODEL_PATH  = Path(os.getenv("CNN_MODEL_PATH", str(MODELS_DIR / "olive_cnn.pth")))
 
 # ── LLM ──────────────────────────────────────────────────────────────────────
 GROQ_API_KEY        = os.getenv("GROQ_API_KEY", "")
