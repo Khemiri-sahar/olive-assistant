@@ -1,31 +1,54 @@
-# Environments
-venv/
+# ── Secrets ───────────────────────────────────────────────────────────────────
 .env
 
-# Python caching
+# ── Python environments ────────────────────────────────────────────────────────
+venv/
+.venv/
+env/
 __pycache__/
 *.py[cod]
 *$py.class
-.pytest_cache/
+*.egg-info/
+dist/
+build/
+.eggs/
 
-# Temporary test scripts
+# ── Test / cache ───────────────────────────────────────────────────────────────
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+*.log
+
+# ── Temporary / dev scripts ────────────────────────────────────────────────────
 scripts/test_rag.py
 scripts/mock_pdf.py
 
-# RAG Corpus & Indices
+# ── RAG corpus (built at setup time) ──────────────────────────────────────────
 corpus/pdfs/
 corpus/*.faiss
 corpus/*.json
 
-# ML and Models
+# ── ML models and weights ─────────────────────────────────────────────────────
 models/
 *.pth
 *.pt
 *.h5
 *.onnx
+*.bin
 .huggingface/
 
-# OS generated files
+# ── Training data ──────────────────────────────────────────────────────────────
+data/
+
+# ── IDE ────────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── OS ────────────────────────────────────────────────────────────────────────
 .DS_Store
 .DS_Store?
 ._*
@@ -34,4 +57,7 @@ models/
 ehthumbs.db
 Thumbs.db
 
+# ── Misc ───────────────────────────────────────────────────────────────────────
 AI_CONTEXT.md
+backend/rag/faiss_index
+node_modules/

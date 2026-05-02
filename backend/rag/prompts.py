@@ -5,6 +5,8 @@ CRITICAL: These prompts MUST prevent the LLM from using its pre-trained knowledg
 The system prompt is the last line of defense after the similarity threshold check.
 """
 
+from typing import Optional, Dict
+
 # ─────────────────────────────────────────────────────────────────────────────
 # SYSTEM PROMPT — STRICT RAG-ONLY ANSWERING
 # This is the most important prompt. DO NOT soften the restrictions.
@@ -31,7 +33,7 @@ SYSTEM_PROMPT = """أنت مساعد زراعي متخصص في زراعة ال�
 def build_user_prompt(
     question: str,
     context: str,
-    disease_info: dict | None = None,
+    disease_info: Optional[Dict] = None,
 ) -> str:
     """
     Build the user message with retrieved context injected.

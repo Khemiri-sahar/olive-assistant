@@ -5,6 +5,9 @@ All tuneable parameters live here. Adjust before jury demo.
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv(Path(__file__).parent.parent / ".env")
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 BASE_DIR        = Path(__file__).parent.parent
@@ -15,8 +18,8 @@ METADATA_FILE   = CORPUS_DIR / "metadata.json"
 CNN_MODEL_PATH  = MODELS_DIR / "olive_cnn.pth"
 
 # ── LLM ──────────────────────────────────────────────────────────────────────
-ANTHROPIC_API_KEY   = os.getenv("ANTHROPIC_API_KEY", "")
-LLM_MODEL           = "claude-opus-4-5"          # most capable for Darija
+GROQ_API_KEY        = os.getenv("GROQ_API_KEY", "")
+LLM_MODEL           = "llama-3.3-70b-versatile"           # most capable Groq model for Darija
 LLM_MAX_TOKENS      = 400                          # keep responses concise
 
 # ── ASR (Whisper) ─────────────────────────────────────────────────────────────

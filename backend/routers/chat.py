@@ -13,7 +13,7 @@ import base64
 import logging
 from typing import Optional
 
-import anthropic
+import groq
 from fastapi import APIRouter, Request, HTTPException
 from pydantic import BaseModel, Field
 
@@ -48,20 +48,22 @@ def _get_disease_info(disease_id: Optional[int]) -> Optional[dict]:
 
 
 def _call_llm(system_prompt: str, user_prompt: str) -> str:
-    """Call Anthropic Claude with strict RAG prompt."""
-    from config import ANTHROPIC_API_KEY, LLM_MODEL, LLM_MAX_TOKENS
+    """Call Groq with strict RAG prompt."""
+    from config import GROQ_API_KEY, LLM_MODEL, LLM_MAX_TOKENS
 
-    if not ANTHROPIC_API_KEY:
-        raise HTTPException(503, "LLM not configured — set ANTHROPIC_API_KEY")
+    if not GROQ_API_KEY:
+        raise HTTPException(503, "LLM not configured — set GROQ_API_KEY")
 
-    client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
-    message = client.messages.create(
+    client = groq.Groq(api_key=GROQ_API_KEY)
+    completion = client.chat.completions.create(
         model=LLM_MODEL,
         max_tokens=LLM_MAX_TOKENS,
-        system=system_prompt,
-        messages=[{"role": "user", "content": user_prompt}],
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ],
     )
-    return message.content[0].text
+    return completion.choices[0].message.content
 
 
 # ── Main endpoint ─────────────────────────────────────────────────────────────

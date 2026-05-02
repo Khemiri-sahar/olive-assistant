@@ -45,7 +45,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_sampler(dataset) -> WeightedRandomSampler:
-    """Weighted sampler to handle class imbalance in PlantVillage."""
+    """Weighted sampler to handle class imbalance in olive disease dataset."""
     class_counts = np.bincount([s[1] for s in dataset.samples])
     weights = 1.0 / class_counts
     sample_weights = [weights[s[1]] for s in dataset.samples]

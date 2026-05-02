@@ -1,5 +1,7 @@
 # ============================================================
 # Olive Assistant — Python Dependencies
+# Python 3.9+ required
+# Install: pip install -r requirements.txt
 # ============================================================
 
 # Web framework
@@ -7,13 +9,17 @@ fastapi==0.111.0
 uvicorn[standard]==0.30.1
 python-multipart==0.0.9
 
+# LLM (Groq — free tier available at console.groq.com)
+groq==1.0.0
+
 # Whisper ASR
+# System dependency: ffmpeg must be installed separately
 openai-whisper==20231117
 torch==2.3.0
 torchvision==0.18.0
 torchaudio==2.3.0
 
-# TTS
+# TTS (no API key required)
 edge-tts==6.1.10
 
 # RAG / Embeddings
@@ -42,6 +48,3 @@ aiofiles==23.2.1
 python-dotenv==1.0.1
 pydantic==2.7.4
 tqdm==4.66.4
-
-# LLM client (Anthropic)
-anthropic==0.29.0

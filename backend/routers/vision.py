@@ -9,6 +9,7 @@ import io
 import logging
 
 from fastapi import APIRouter, Request, UploadFile, File, HTTPException
+from typing import Optional, Dict
 from pydantic import BaseModel
 from PIL import Image
 
@@ -23,9 +24,9 @@ class ClassifyResponse(BaseModel):
     class_fr:    str
     confidence:  float
     low_conf:    bool
-    eppo_code:   str | None
+    eppo_code:   Optional[str]
     advice_ar:   str
-    all_scores:  dict[str, float]
+    all_scores:  Dict[str, float]
 
 
 @router.post("/classify", response_model=ClassifyResponse)
