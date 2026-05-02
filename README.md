@@ -238,10 +238,8 @@ All settings live in `backend/config.py` and can be overridden via `.env`.
 | ID | English | Arabic |
 |---|---|---|
 | 0 | Healthy | سليم |
-| 1 | Peacock Eye | عين الطاووس |
-| 2 | Anthracnose | أنثراكنوز |
-| 3 | Verticillium Wilt | ذبول الفرتيسيليوم |
-| 4 | Cercospora Leaf Spot | تبقع السيركوسبورا |
+| 1 | Aculus Olearius | أكاروس الزيتون |
+| 2 | Olive Peacock Spot | عين الطاووس |
 
 ---
 
