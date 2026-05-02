@@ -1,0 +1,29 @@
+{
+  "name": "مساعد الزيتون",
+  "short_name": "زيتون AI",
+  "description": "مساعد زراعي ذكي لفلاحي الزيتون في تونس",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F0E8",
+  "theme_color": "#2D5016",
+  "orientation": "portrait",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["agriculture", "productivity"],
+  "shortcuts": [
+    {
+      "name": "صوّر وڤة",
+      "url": "/?tab=scan",
+      "description": "التقط صورة لورقة زيتون"
+    },
+    {
+      "name": "اسأل سؤال",
+      "url": "/?tab=voice",
+      "description": "اسأل بصوتك بالدارجة"
+    }
+  ]
+}

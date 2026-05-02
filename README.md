@@ -157,17 +157,16 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 The API is now available at `http://localhost:8000`.  
 Interactive docs: `http://localhost:8000/docs`
 
-### 7. (Optional) Serve the frontend
+### 7. Open the frontend
 
-The frontend is a static PWA — no build step needed.
+The frontend is served automatically by FastAPI — no separate server needed.
 
-```bash
-cd frontend
-python -m http.server 3000
-# Open http://localhost:3000
+```
+http://localhost:8000
 ```
 
-The frontend expects the backend at `http://localhost:8000`.
+FastAPI mounts `frontend/` as static files on `/`. The app uses `window.location.origin`
+as its API base, so frontend and backend must share the same origin (port 8000).
 
 ---
 
@@ -177,8 +176,7 @@ The frontend expects the backend at `http://localhost:8000`.
 # Copy and fill in your .env first (step 3 above)
 docker-compose up --build
 
-# Backend: http://localhost:8000
-# Frontend: http://localhost:3000
+# App (frontend + backend): http://localhost:8000
 ```
 
 ---

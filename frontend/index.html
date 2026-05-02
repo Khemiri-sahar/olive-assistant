@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="theme-color" content="#2D5016" />
+  <meta name="description" content="مساعد زراعي ذكي لفلاحي الزيتون في تونس" />
+  <title>مساعد الزيتون</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+  <!-- Fonts: Amiri (Arabic) + Tajawal (UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="src/style.css" />
+</head>
+<body>
+
+<!-- ── App Shell ─────────────────────────────────────────────────────────── -->
+<div id="app">
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-content">
+      <div class="header-icon">🫒</div>
+      <div>
+        <h1>مساعد الزيتون</h1>
+        <p class="header-sub">Olive Farmer Assistant · دارجة AI</p>
+      </div>
+      <div class="header-status" id="status-dot" title="حالة الاتصال"></div>
+    </div>
+  </header>
+
+  <!-- Navigation tabs -->
+  <nav class="tab-bar">
+    <button class="tab-btn active" data-tab="home">
+      <span class="tab-icon">🏠</span>
+      <span class="tab-label">الرئيسية</span>
+    </button>
+    <button class="tab-btn" data-tab="scan">
+      <span class="tab-icon">📷</span>
+      <span class="tab-label">صوّر الوڤة</span>
+    </button>
+    <button class="tab-btn" data-tab="voice">
+      <span class="tab-icon">🎙</span>
+      <span class="tab-label">اسأل</span>
+    </button>
+    <button class="tab-btn" data-tab="result">
+      <span class="tab-icon">📋</span>
+      <span class="tab-label">الجواب</span>
+    </button>
+  </nav>
+
+  <!-- ── HOME TAB ────────────────────────────────────────────────────────── -->
+  <section id="tab-home" class="tab-content active">
+    <div class="home-hero">
+      <div class="hero-emoji">🫒</div>
+      <h2>أهلاً بيك في مساعد الزيتون</h2>
+      <p>اسأل بالدارجة، صوّر الوڤة، واحصل على إجابة موثوقة من مصادر علمية.</p>
+    </div>
+
+    <div class="quick-actions">
+      <button class="action-card" onclick="switchTab('scan')">
+        <span class="action-icon">📷</span>
+        <span class="action-label">صوّر وڤة مريضة</span>
+        <span class="action-sub">CNN · تشخيص فوري</span>
+      </button>
+      <button class="action-card" onclick="switchTab('voice')">
+        <span class="action-icon">🎙</span>
+        <span class="action-label">اسأل بصوتك</span>
+        <span class="action-sub">Whisper · دارجة</span>
+      </button>
+    </div>
+
+    <div class="example-questions">
+      <h3>أمثلة أسئلة</h3>
+      <button class="example-q" onclick="askText('شنوة هاذي المرض اللي في زيتوني ؟')">
+        شنوة هاذي المرض اللي في زيتوني ؟
+      </button>
+      <button class="example-q" onclick="askText('وقتاش نحشّش زيتوني ؟')">
+        وقتاش نحشّش زيتوني ؟
+      </button>
+      <button class="example-q" onclick="askText('كيفاش نعالج عين الطاووس ؟')">
+        كيفاش نعالج عين الطاووس ؟
+      </button>
+    </div>
+
+    <div class="sources-note">
+      <p>📚 المصادر: FAO · EPPO · CIHEAM · CIRAD</p>
+      <p class="note-small">الإجابات مبنية فقط على الوثائق العلمية — لا هلوسة</p>
+    </div>
+  </section>
+
+  <!-- ── SCAN TAB ────────────────────────────────────────────────────────── -->
+  <section id="tab-scan" class="tab-content">
+    <div class="section-title">
+      <h2>📷 صوّر الوڤة</h2>
+      <p>التق بصورة للورقة المريضة — الذكاء الاصطناعي يشخص المرض</p>
+    </div>
+
+    <!-- Camera zone -->
+    <div class="camera-zone" id="camera-zone">
+      <div class="camera-preview" id="camera-preview">
+        <div class="camera-placeholder" id="camera-placeholder">
+          <div class="camera-icon">📷</div>
+          <p>اضغط باش تصوّر وڤة الزيتون</p>
+          <p class="hint-text">أو ارفع صورة من المعرض</p>
+        </div>
+        <img id="preview-img" class="preview-image" style="display:none" alt="صورة الوڤة" />
+        <video id="camera-video" class="preview-video" style="display:none" autoplay playsinline></video>
+      </div>
+
+      <div class="camera-controls">
+        <button class="btn-primary" id="btn-camera" onclick="startCamera()">
+          📷 فتح الكاميرا
+        </button>
+        <button class="btn-secondary" onclick="document.getElementById('file-input').click()">
+          🖼 من المعرض
+        </button>
+        <input type="file" id="file-input" accept="image/*" capture="environment"
+               style="display:none" onchange="handleFileUpload(event)" />
+      </div>
+
+      <!-- Camera live controls (shown when camera active) -->
+      <div id="live-controls" style="display:none" class="live-controls">
+        <button class="btn-capture" id="btn-capture" onclick="capturePhoto()">
+          📸 التقط
+        </button>
+        <button class="btn-cancel" onclick="stopCamera()">إلغاء</button>
+      </div>
+    </div>
+
+    <!-- CNN Result -->
+    <div id="cnn-result" class="result-panel" style="display:none">
+      <div class="result-header">
+        <span class="result-badge" id="disease-badge">...</span>
+        <span class="conf-score" id="conf-score">0%</span>
+      </div>
+      <div class="result-body">
+        <p class="result-ar" id="result-ar">...</p>
+        <p class="result-sub" id="result-eppo">...</p>
+      </div>
+      <div class="result-advice" id="result-advice">...</div>
+      <button class="btn-primary btn-full" onclick="proceedToAsk()">
+        🎙 اسأل عن هذا المرض
+      </button>
+    </div>
+
+    <!-- Low confidence warning -->
+    <div id="low-conf-warning" class="warning-panel" style="display:none">
+      ⚠️ الثقة في التشخيص منخفضة — تأكد أن الصورة واضحة وقريبة من الوڤة
+    </div>
+  </section>
+
+  <!-- ── VOICE TAB ───────────────────────────────────────────────────────── -->
+  <section id="tab-voice" class="tab-content">
+    <div class="section-title">
+      <h2>🎙 اسأل بصوتك</h2>
+      <p>تكلّم بالدارجة — Whisper يفهمك</p>
+    </div>
+
+    <!-- Mic button -->
+    <div class="mic-area">
+      <button class="mic-btn" id="mic-btn" onclick="toggleRecording()">
+        <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor">
+          <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4z"/>
+          <path d="M19 11a1 1 0 0 0-2 0 5 5 0 0 1-10 0 1 1 0 0 0-2 0 7 7 0 0 0 6 6.93V21H8a1 1 0 0 0 0 2h8a1 1 0 0 0 0-2h-3v-3.07A7 7 0 0 0 19 11z"/>
+        </svg>
+      </button>
+      <p class="mic-label" id="mic-label">اضغط وتكلّم بالدارجة</p>
+      <div class="recording-wave" id="recording-wave">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- Transcript -->
+    <div id="transcript-box" class="transcript-box" style="display:none">
+      <p class="transcript-label">ما قلته:</p>
+      <p id="transcript-text" class="transcript-text"></p>
+      <button class="btn-send" onclick="submitTranscript()">
+        إرسال ↩
+      </button>
+    </div>
+
+    <!-- Text fallback -->
+    <div class="text-fallback">
+      <p class="fallback-label">أو اكتب سؤالك مباشرة:</p>
+      <div class="text-input-row">
+        <input type="text" id="text-input" class="text-input"
+               placeholder="اكتب سؤالك هنا..." dir="rtl" />
+        <button class="btn-send-text" onclick="submitText()">↩</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RESULT TAB ──────────────────────────────────────────────────────── -->
+  <section id="tab-result" class="tab-content">
+    <!-- Loading state -->
+    <div id="result-loading" class="loading-state" style="display:none">
+      <div class="spinner"></div>
+      <p id="loading-step">جاري التحليل...</p>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Answer -->
+    <div id="result-answer" style="display:none">
+      <!-- Score indicator -->
+      <div class="score-bar">
+        <span class="score-label">درجة الثقة في الإجابة:</span>
+        <div class="score-track">
+          <div class="score-fill" id="score-fill"></div>
+        </div>
+        <span class="score-pct" id="score-pct">0%</span>
+      </div>
+
+      <!-- Answer text -->
+      <div class="answer-card">
+        <p class="answer-text" id="answer-text"></p>
+      </div>
+
+      <!-- Citations -->
+      <div class="citations" id="citations-box">
+        <p class="citations-label">📚 المصادر:</p>
+        <ul id="citations-list"></ul>
+      </div>
+
+      <!-- Audio player -->
+      <div class="audio-player" id="audio-player" style="display:none">
+        <button class="btn-play" id="btn-play" onclick="playAudio()">
+          🔊 استمع للجواب
+        </button>
+        <audio id="audio-el" preload="none"></audio>
+      </div>
+
+      <!-- Actions -->
+      <div class="result-actions">
+        <button class="btn-secondary" onclick="switchTab('voice')">
+          🎙 سؤال جديد
+        </button>
+        <button class="btn-secondary" onclick="switchTab('scan')">
+          📷 صورة جديدة
+        </button>
+      </div>
+    </div>
+
+    <!-- Refusal -->
+    <div id="result-refused" style="display:none">
+      <div class="refusal-card">
+        <div class="refusal-icon">⚠️</div>
+        <p class="refusal-text" id="refusal-text"></p>
+        <div class="refusal-contact">
+          <p>📞 اتصل بمرشد زراعي للمساعدة المتخصصة</p>
+        </div>
+        <div class="audio-player" id="audio-player-refused" style="display:none">
+          <button class="btn-play" onclick="playRefusedAudio()">
+            🔊 استمع للرد
+          </button>
+          <audio id="audio-refused" preload="none"></audio>
+        </div>
+      </div>
+      <button class="btn-primary btn-full" onclick="switchTab('voice')">
+        🎙 اسأل سؤال آخر
+      </button>
+    </div>
+
+    <!-- Empty state -->
+    <div id="result-empty" class="empty-state">
+      <p>اسأل سؤالاً أو صوّر وڤة باش تشوف الجواب هنا</p>
+      <button class="btn-primary" onclick="switchTab('home')">ابدأ</button>
+    </div>
+  </section>
+
+</div><!-- /app -->
+
+<!-- Canvas for photo capture -->
+<canvas id="capture-canvas" style="display:none"></canvas>
+
+<script src="src/app.js"></script>
+<script>
+  // Register Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(r => console.log('SW registered:', r.scope))
+        .catch(e => console.warn('SW registration failed:', e));
+    });
+  }
+</script>
+</body>
+</html>
