@@ -53,32 +53,18 @@ DISEASE_CLASSES = {
         "advice_ar": "الوڤة سليمة، واصل الرعاية الاعتيادية."
     },
     1: {
-        "ar": "عين الطاووس",
-        "fr": "Œil de paon",
-        "en": "Peacock Eye",
-        "eppo": "SPIOLEA",
-        "advice_ar": "مرض فطري — رشّ بمبيدات النحاس قبل الأمطار. راجع قاعدة EPPO."
+        "ar": "عنكبوت الزيتون (أكولوس)",
+        "fr": "Acariose de l'olivier",
+        "en": "Aculus Olearius",
+        "eppo": "ACULOS",
+        "advice_ar": "حلم الزيتون — يسبب تشوه الأوراق. رشّ بمبيدات الأكاروسات (ديكوفول أو أبامكتين) في الربيع."
     },
     2: {
-        "ar": "أنثراكنوز",
-        "fr": "Anthracnose",
-        "en": "Anthracnose",
-        "eppo": "COLLGL",
-        "advice_ar": "داء فطري خطير — يُصيب الثمار. العلاج بالمبيدات الجوية بعد الإزهار."
-    },
-    3: {
-        "ar": "ذبول الفرتيسيليوم",
-        "fr": "Verticilliose",
-        "en": "Verticillium Wilt",
-        "eppo": "VERTDA",
-        "advice_ar": "مرض تربة — لا علاج كيميائي فعّال. استشر مرشدًا زراعيًا فورًا."
-    },
-    4: {
-        "ar": "تبقع السيركوسبورا",
-        "fr": "Cercosporose",
-        "en": "Cercospora Leaf Spot",
-        "eppo": "CERCOL",
-        "advice_ar": "تبقعات رمادية — رشّ بمركبات النحاس في الخريف."
+        "ar": "عين الطاووس",
+        "fr": "Œil de paon",
+        "en": "Olive Peacock Spot",
+        "eppo": "SPIOLEA",
+        "advice_ar": "مرض فطري (Spilocaea oleagina) — رشّ بمبيدات النحاس قبل الأمطار الخريفية."
     },
 }
 

@@ -4,7 +4,7 @@ vision/model.py — MobileNetV3-based CNN for olive leaf disease classification.
 Uses transfer learning from ImageNet pretrained MobileNetV3-Large.
 Chosen for speed (< 100ms inference on CPU) while maintaining accuracy.
 
-Classes: Healthy / Peacock Eye / Anthracnose / Verticillium / Cercospora
+Classes (alphabetical ImageFolder order): Healthy / Aculus Olearius / Olive Peacock Spot
 """
 
 import logging
@@ -20,14 +20,14 @@ from PIL import Image
 logger = logging.getLogger(__name__)
 
 # ── Disease class configuration ───────────────────────────────────────────────
-NUM_CLASSES = 5
+NUM_CLASSES = 3
 
+# ImageFolder sorts subdirs alphabetically:
+# 0 = Healthy, 1 = aculus_olearius, 2 = olive_peacock_spot
 CLASS_NAMES = {
     0: "Healthy",
-    1: "Peacock Eye",
-    2: "Anthracnose",
-    3: "Verticillium Wilt",
-    4: "Cercospora Leaf Spot",
+    1: "Aculus Olearius",
+    2: "Olive Peacock Spot",
 }
 
 # ── Image transforms ──────────────────────────────────────────────────────────
@@ -88,7 +88,7 @@ class OliveCNN:
 
         if model_path and Path(model_path).exists():
             logger.info(f"Loading CNN weights from {model_path}")
-            state = torch.load(model_path, map_location=self.device)
+            state = torch.load(model_path, map_location=self.device, weights_only=False)
             # Support both raw state_dict and checkpoint dicts
             if "model_state_dict" in state:
                 self.model.load_state_dict(state["model_state_dict"])
