@@ -186,6 +186,26 @@ body {
 }
 .example-q:hover { background: var(--green-pale); border-right-color: var(--green-main); }
 
+.example-q--needs-image {
+  border-right-color: var(--sand-dark);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.example-q--needs-image:hover { border-right-color: #b45309; background: #fffbeb; }
+
+.example-q-hint {
+  font-size: 0.72rem;
+  font-family: 'Tajawal', sans-serif;
+  color: #b45309;
+  background: #fef3c7;
+  border-radius: 50px;
+  padding: 0.15rem 0.5rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 .sources-note {
   text-align: center;
   color: var(--text-light);
