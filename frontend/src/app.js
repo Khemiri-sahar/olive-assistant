@@ -84,6 +84,7 @@ function capturePhoto() {
   const img = document.getElementById('preview-img');
   img.src = canvas.toDataURL('image/jpeg');
   img.style.display = 'block';
+  document.getElementById('btn-clear-photo').style.display = 'block';
 }
 
 function handleFileUpload(event) {
@@ -96,6 +97,7 @@ function handleFileUpload(event) {
     img.src = e.target.result;
     img.style.display = 'block';
     document.getElementById('camera-placeholder').style.display = 'none';
+    document.getElementById('btn-clear-photo').style.display = 'block';
   };
   reader.readAsDataURL(file);
   classifyLeaf(file);
@@ -236,7 +238,27 @@ function submitText() {
   }
 }
 
+function clearPhoto() {
+  const img = document.getElementById('preview-img');
+  img.src = '';
+  img.style.display = 'none';
+  document.getElementById('camera-placeholder').style.display = 'block';
+  document.getElementById('cnn-result').style.display = 'none';
+  document.getElementById('low-conf-warning').style.display = 'none';
+  document.querySelector('.camera-controls').style.display = 'flex';
+  document.getElementById('file-input').value = '';
+  state.currentDisease = null;
+}
+
+const NEEDS_IMAGE_KEYWORDS = ['هاذي المرض', 'هاذا المرض', 'هاذي الوڤة', 'هاذي الوقة', 'هاذا اللي في زيتوني'];
+
 function askText(question) {
+  const needsImage = NEEDS_IMAGE_KEYWORDS.some(kw => question.includes(kw));
+  if (needsImage && !state.currentDisease) {
+    switchTab('scan');
+    showAlert('صوّر الوڤة أولاً باش نقدر نشخص المرض 📷');
+    return;
+  }
   submitQuestion(question);
 }
 

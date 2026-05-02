@@ -255,6 +255,24 @@ body {
   font-family: 'Tajawal', sans-serif;
 }
 
+.btn-clear-photo {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background: rgba(0,0,0,0.55);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  font-family: 'Tajawal', sans-serif;
+  cursor: pointer;
+  z-index: 10;
+}
+.btn-clear-photo:hover {
+  background: rgba(180,30,30,0.8);
+}
+
 /* ── Result panel (CNN) ──────────────────────────────────────────── */
 .result-panel {
   background: var(--white);
