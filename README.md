@@ -157,16 +157,21 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 The API is now available at `http://localhost:8000`.  
 Interactive docs: `http://localhost:8000/docs`
 
-### 7. Open the frontend
+### 7. Start the frontend
 
-The frontend is served automatically by FastAPI — no separate server needed.
+Open a second terminal and serve the frontend on its own port:
 
+```bash
+cd frontend
+python -m http.server 3000
+# Open http://localhost:3000
 ```
-http://localhost:8000
-```
 
-FastAPI mounts `frontend/` as static files on `/`. The app uses `window.location.origin`
-as its API base, so frontend and backend must share the same origin (port 8000).
+The frontend talks to the backend at `http://localhost:8000` (hardcoded in `src/app.js`).  
+CORS is open on the backend so cross-origin requests work out of the box.
+
+> **Alternative:** FastAPI also mounts `frontend/` at `/` as a fallback, so  
+> `http://localhost:8000` works too if you prefer a single port.
 
 ---
 

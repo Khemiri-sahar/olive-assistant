@@ -103,12 +103,6 @@ app.include_router(chat.router,   prefix="/api", tags=["Chat"])
 app.include_router(vision.router, prefix="/api", tags=["Vision"])
 app.include_router(audio.router,  prefix="/api", tags=["Audio"])
 
-# ── Serve frontend static files ───────────────────────────────────────────────
-frontend_dir = Path(__file__).parent.parent / "frontend"
-if frontend_dir.exists():
-    app.mount("/", StaticFiles(directory=str(frontend_dir), html=True), name="frontend")
-
-
 @app.get("/health")
 async def health():
     return {
@@ -117,3 +111,8 @@ async def health():
         "cnn":    app_state.get("cnn") is not None,
         "rag":    app_state.get("rag") is not None,
     }
+
+# ── Serve frontend static files ───────────────────────────────────────────────
+frontend_dir = Path(__file__).parent.parent / "frontend"
+if frontend_dir.exists():
+    app.mount("/", StaticFiles(directory=str(frontend_dir), html=True), name="frontend")

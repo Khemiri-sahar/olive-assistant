@@ -11,7 +11,7 @@
 'use strict';
 
 // ── Config ────────────────────────────────────────────────────────────────────
-const API_BASE = window.location.origin;   // same-origin (FastAPI serves both)
+const API_BASE = 'http://localhost:8000';   // backend port (frontend runs separately)
 
 // ── State ─────────────────────────────────────────────────────────────────────
 const state = {
