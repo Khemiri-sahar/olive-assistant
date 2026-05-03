@@ -322,6 +322,7 @@ function displayAnswer(data) {
       const audioEl = document.getElementById('audio-refused');
       audioEl.src = `data:audio/mpeg;base64,${data.audio_b64}`;
       document.getElementById('audio-player-refused').style.display = 'block';
+      audioEl.play().catch(() => {});
     }
   } else {
     // ── Answer path ─────────────────────────────────────────────
@@ -345,8 +346,14 @@ function displayAnswer(data) {
     if (data.audio_b64) {
       state.lastAudioB64 = data.audio_b64;
       const audioEl = document.getElementById('audio-el');
+      const btn = document.getElementById('btn-play');
       audioEl.src = `data:audio/mpeg;base64,${data.audio_b64}`;
+      audioEl.onended = () => { btn.textContent = '🔊 استمع للجواب'; };
+      audioEl.onpause = () => { btn.textContent = '🔊 استمع للجواب'; };
       document.getElementById('audio-player').style.display = 'block';
+      audioEl.play().then(() => {
+        btn.textContent = '⏸ إيقاف';
+      }).catch(() => {});
     } else {
       document.getElementById('audio-player').style.display = 'none';
     }
@@ -358,17 +365,14 @@ function displayAnswer(data) {
 function playAudio() {
   const audio = document.getElementById('audio-el');
   const btn = document.getElementById('btn-play');
-  if (audio.src) {
-    if (!audio.paused) {
-      audio.pause();
-      btn.textContent = '🔊 استمع للجواب';
-      return;
-    }
-    audio.play();
-    btn.textContent = '⏸ إيقاف';
-    audio.onended = () => { btn.textContent = '🔊 استمع للجواب'; };
-    audio.onpause = () => { btn.textContent = '🔊 استمع للجواب'; };
+  if (!state.lastAudioB64) return;
+  if (!audio.paused) {
+    audio.pause();
+    return;
   }
+  audio.play().then(() => {
+    btn.textContent = '⏸ إيقاف';
+  }).catch(() => {});
 }
 
 function playRefusedAudio() {

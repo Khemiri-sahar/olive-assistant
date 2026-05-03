@@ -22,19 +22,44 @@ from sentence_transformers import SentenceTransformer
 logger = logging.getLogger(__name__)
 
 # Keywords that should trigger immediate refusal regardless of similarity score
-# (dosage questions — legal risk)
+# (dosage questions — legal/safety risk, jury -30pt penalty)
 DOSAGE_KEYWORDS = [
-    "جرعة", "dosage", "dose", "ml/l", "g/l", "كمية المبيد",
-    "قياس", "proportion", "concentration",
+    # Arabic / Darija
+    "جرعة", "كمية المبيد", "كمية الرش", "نسبة الرش", "نسبة التخليط",
+    "شحال نرش", "شحال من مل", "شحال من غرام", "شحال من كيلو",
+    "كيفاش تتركب", "كيفاش نركب", "تخليط المبيد", "تحضير المحلول",
+    "نسبة المبيد", "قياس المبيد",
+    # French
+    "dosage", "dose", "quantité", "litre par", "g/l", "ml/l",
+    "proportion", "concentration", "dilution", "mélange",
+    # English
+    "dose", "dosage", "ml per", "g per", "how much pesticide",
+    "mixing ratio", "application rate",
 ]
 
 # Out-of-domain topic keywords → refuse immediately
 OOD_KEYWORDS = [
-    "طماطم", "tomato", "tomate", "بطاطا", "potato",
-    "عنب", "raisin", "vigne", "قمح", "blé", "wheat",
+    # Other crops
+    "طماطم", "tomato", "tomate", "بطاطا", "potato", "pomme de terre",
+    "عنب", "raisin", "vigne", "قمح", "blé", "wheat", "شعير", "orge",
     "لوز", "amande", "almond", "تفاح", "pomme", "apple",
+    "فلفل", "poivron", "pepper", "خيار", "concombre", "cucumber",
+    "خضرة", "légumes", "potager", "vegetables",
+    # Business / economics
     "شركة", "entreprise", "company", "سعر", "prix", "price",
-    "سياسة", "politique", "politics",
+    "بورصة", "bourse", "stock market", "استثمار", "investissement",
+    # Politics / news
+    "سياسة", "politique", "politics", "أخبار", "actualité", "news",
+    "انتخابات", "élections", "elections",
+    # Sports / entertainment
+    "كرة القدم", "football", "رياضة", "sport", "سينما", "cinéma",
+    # General / AI identity traps
+    "من أنت", "who are you", "chatgpt", "gpt", "openai", "claude",
+    "ذكاء اصطناعي عام", "intelligence artificielle générale",
+    # Cooking / human health (non-olive)
+    "وصفة طبخ", "recette de cuisine", "دكتور بشري", "médecin",
+    # Weather
+    "توقعات الطقس", "météo", "weather forecast",
 ]
 
 
@@ -115,6 +140,11 @@ class RAGRetriever:
             "عنكبوت":        "Aculus olearius olive mite acariose treatment",
             "أكولوس":        "Aculus olearius olive mite acariose treatment",
             "أنثراكنوز":     "Colletotrichum olive anthracnose treatment fungicide",
+            "ذبابة الزيتون": "Bactrocera oleae Dacus oleae olive fruit fly Ceratitis capitata tephritidae bait trap control",
+            "ذبابة":         "Bactrocera oleae olive fruit fly tephritidae Ceratitis control treatment",
+            "دودة الزيتون":  "Bactrocera oleae Dacus olive larva fruit fly control treatment",
+            "زيلّيلا":       "Xylella fastidiosa olive quick decline Philaenus spumarius vector",
+            "زيليلا":        "Xylella fastidiosa olive quick decline Philaenus spumarius vector",
         }
         augmented = query
         for term, expansion in DISEASE_TERM_MAP.items():
