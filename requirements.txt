@@ -20,7 +20,7 @@ torchvision==0.18.0
 torchaudio==2.3.0
 
 # TTS (no API key required)
-edge-tts==6.1.10
+edge-tts==7.2.8
 
 # RAG / Embeddings
 sentence-transformers==3.0.1
